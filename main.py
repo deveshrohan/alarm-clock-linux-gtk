@@ -55,14 +55,15 @@ class mainWindow(Gtk.Window):
 #       	stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
 #	        stack.set_transition_duration(1000)
 		
-                clock_show = Gtk.Label()
-                body_grid.attach(clock_show, 5, 3, 5, 5)
-                #while True:
-                curr_time = clock.clock().__get_time__()
-                clock_show.set_markup('<span size="58000">' + curr_time + '</span>')
+                self.clock_show = Gtk.Label()
+                body_grid.attach(self.clock_show, 5, 3, 5, 5)
 		
 
 win = mainWindow()
+#while True:
+curr_time = clock.clock().__get_time__()
+win.clock_show.set_markup('<span font = "80" foreground = "#FFFFFF">' + curr_time + '</span>')
+
 win.connect("delete-event", Gtk.main_quit)
 win.show_all()
 Gtk.main()
