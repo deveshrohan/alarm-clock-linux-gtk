@@ -11,10 +11,11 @@ class MainWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="Alarm Clock")
         self.set_default_size(600, 500)
-#    	self.set_resizable(False)
+        self.set_resizable(False)
 
         main_grid = Gtk.Grid()
         main_grid.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(0.19, 0.24, 0.55, 0.7))
+        main_grid.set_row_spacing(150)
         self.add(main_grid)
 
         head_grid = Gtk.Grid()
@@ -51,23 +52,24 @@ class MainWindow(Gtk.Window):
 
         main_grid.add(head_grid)
 
-        body_grid = Gtk.Grid()
-        main_grid.attach_next_to(body_grid, head_grid, Gtk.PositionType.BOTTOM, 3, 3)
+        body_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+
+        main_grid.attach_next_to(body_box, head_grid, Gtk.PositionType.BOTTOM, 3, 3)
 
 #       stack = Gtk.Stack()
 #       stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
 #       stack.set_transition_duration(1000)
         self.clock_show = Gtk.Label()
-        body_grid.attach(self.clock_show, 5, 3, 5, 5)
+        body_box.add(self.clock_show)
 
         def set_time(current_time):
             self.clock_show.set_markup('<span font = "80" foreground = "#FFFFFF">' + current_time + '</span>')
 
         def update_time():
             while True:
-                current_time = clock.clock().__get_time__()
+                current_time = clock.Clock().__get_time__()
                 GLib.idle_add(set_time, current_time)
-                time.sleep(1)
+                time.sleep(0.01)
 
         clock_set_thread = threading.Thread(target=update_time)
         clock_set_thread.daemon = True
