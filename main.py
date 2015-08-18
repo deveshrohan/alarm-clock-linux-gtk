@@ -7,91 +7,105 @@ import time
 
 
 class MainWindow(Gtk.Window):
+    main_grid = Gtk.Grid()
+    head_grid = Gtk.Grid()
+    body_grid = Gtk.Grid()
 
-    def clock_button_pressed(self, eventbox, event):
-            print("Event: %s" % event)
-
-    def alarm_button_pressed(self, eventbox, event):
-            print("Event: %s" % event)
-
-    def timer_button_pressed(self, eventbox, event):
-            print("Event: %s" % event)
-
-    def settings_button_pressed(self, eventbox, event):
-            print("Event: %s" % event)
+    footer_clock = Gtk.Grid()
+    footer_alarm = Gtk.Grid()
+    footer_timer = Gtk.Grid()
+    footer_settings = Gtk.Grid()
 
     def __init__(self):
+
+        def fill_footer(widget):
+            widget.modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse("white"))
+
+        def empty_footer(widget):
+            widget.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(0, 0, 0, 0))
+
+        def clock_button_enter(eventbox, event):
+            fill_footer(self.footer_clock)
+
+        def clock_button_exit(eventbox, event):
+            empty_footer(self.footer_clock)
+
+        def alarm_button_enter(eventbox, event):
+            fill_footer(self.footer_alarm)
+
+        def alarm_button_exit(eventbox, event):
+            empty_footer(self.footer_alarm)
+
+        def timer_button_enter(eventbox, event):
+            fill_footer(self.footer_timer)
+
+        def timer_button_exit(eventbox, event):
+            empty_footer(self.footer_timer)
+
+        def settings_button_enter(eventbox, event):
+            fill_footer(self.footer_settings)
+
+        def settings_button_exit(eventbox, event):
+            empty_footer(self.footer_settings)
+
         Gtk.Window.__init__(self, title="Alarm Clock")
         self.set_default_size(600, 500)
         self.set_border_width(10)
         self.set_resizable(False)
         self.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(0.19, 0.24, 0.55, 0.9))
 
-        main_grid = Gtk.Grid()
-#        main_grid.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(0.19, 0.24, 0.55, 0.7))
-        main_grid.set_row_spacing(150)
-        self.add(main_grid)
+        self.main_grid.set_row_spacing(150)
+        self.add(self.main_grid)
 
-        head_grid = Gtk.Grid()
-        head_grid.set_column_spacing(100)
+        self.head_grid.set_column_spacing(100)
+        self.head_grid.set_row_spacing(5)
 
-#        clock_button = Gtk.Button()
         clock_image = Gtk.Image()
         clock_image.set_from_pixbuf(GdkPixbuf.Pixbuf.new_from_file_at_size('./res/clock.png', 32, 32))
         clock_event_box = Gtk.EventBox()
         clock_event_box.add(clock_image)
-        clock_event_box.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(0.15, 0.24, 0.45, 0.7))
-        clock_event_box.connect("button-press-event", self.clock_button_pressed)
-#        clock_button.set_relief(Gtk.ReliefStyle.NONE)
-#        clock_button.set_focus_on_click(True)
-#        clock_button.set_image(clock_image)
-        head_grid.attach(clock_event_box, 2, 1, 2, 2)
+        clock_event_box.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(0, 0, 0, 0))
+        clock_event_box.connect("enter-notify-event", clock_button_enter)
+        clock_event_box.connect("leave-notify-event", clock_button_exit)
+        self.head_grid.attach(clock_event_box, 2, 1, 2, 2)
+        self.head_grid.attach_next_to(self.footer_clock, clock_event_box, Gtk.PositionType.BOTTOM, 2, 2)
 
-
-#        alarm_button = Gtk.Button()
         alarm_image = Gtk.Image()
         alarm_image.set_from_pixbuf(GdkPixbuf.Pixbuf.new_from_file_at_size('./res/alarm.png', 32, 32))
         alarm_event_box = Gtk.EventBox()
         alarm_event_box.add(alarm_image)
-        alarm_event_box.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(0.15, 0.24, 0.45, 0.7))
-        alarm_event_box.connect("button-press-event", self.alarm_button_pressed)
-#        alarm_button.set_relief(Gtk.ReliefStyle.NONE)
-#       alarm_button.set_image(alarm_image)
-        head_grid.attach_next_to(alarm_event_box, clock_event_box, Gtk.PositionType.RIGHT, 2, 2)
+        alarm_event_box.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(0, 0, 0, 0))
+        alarm_event_box.connect("enter-notify-event", alarm_button_enter)
+        alarm_event_box.connect("leave-notify-event", alarm_button_exit)
+        self.head_grid.attach_next_to(alarm_event_box, clock_event_box, Gtk.PositionType.RIGHT, 2, 2)
+        self.head_grid.attach_next_to(self.footer_alarm, alarm_event_box, Gtk.PositionType.BOTTOM, 2, 2)
 
-#        timer_button = Gtk.Button()
         timer_image = Gtk.Image()
         timer_image.set_from_pixbuf(GdkPixbuf.Pixbuf.new_from_file_at_size('./res/timer.png', 32, 32))
         timer_event_box = Gtk.EventBox()
         timer_event_box.add(timer_image)
-        timer_event_box.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(0.15, 0.24, 0.45, 0.7))
-        timer_event_box.connect("button-press-event", self.timer_button_pressed)
-#        timer_button.set_relief(Gtk.ReliefStyle.NONE)
-#       timer_button.set_image(timer_image)
-        head_grid.attach_next_to(timer_event_box, alarm_event_box, Gtk.PositionType.RIGHT, 2, 2)
+        timer_event_box.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(0, 0, 0, 0))
+        timer_event_box.connect("enter-notify-event", timer_button_enter)
+        timer_event_box.connect("leave-notify-event", timer_button_exit)
+        self.head_grid.attach_next_to(timer_event_box, alarm_event_box, Gtk.PositionType.RIGHT, 2, 2)
+        self.head_grid.attach_next_to(self.footer_timer, timer_event_box, Gtk.PositionType.BOTTOM, 2, 2)
 
-#        settings_button = Gtk.Button()
         settings_image = Gtk.Image()
         settings_image.set_from_pixbuf(GdkPixbuf.Pixbuf.new_from_file_at_size('./res/settings.png', 32, 32))
         settings_event_box = Gtk.EventBox()
         settings_event_box.add(settings_image)
-        settings_event_box.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(0.15, 0.24, 0.45, 0.7))
-        settings_event_box.connect("button-press-event", self.settings_button_pressed)
-#        settings_button.set_relief(Gtk.ReliefStyle.NONE)
-#        settings_button.set_image(settings_image)
-        head_grid.attach_next_to(settings_event_box, timer_event_box, Gtk.PositionType.RIGHT, 2, 2)
+        settings_event_box.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(0, 0, 0, 0))
+        settings_event_box.connect("enter-notify-event", settings_button_enter)
+        settings_event_box.connect("leave-notify-event", settings_button_exit)
+        self.head_grid.attach_next_to(settings_event_box, timer_event_box, Gtk.PositionType.RIGHT, 2, 2)
+        self.head_grid.attach_next_to(self.footer_settings, settings_event_box, Gtk.PositionType.BOTTOM, 2, 2)
 
-        main_grid.add(head_grid)
+        self.main_grid.add(self.head_grid)
+        self.body_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        self.main_grid.attach_next_to(self.body_box, self.head_grid, Gtk.PositionType.BOTTOM, 3, 3)
 
-        body_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
-
-        main_grid.attach_next_to(body_box, head_grid, Gtk.PositionType.BOTTOM, 3, 3)
-
-#       stack = Gtk.Stack()
-#       stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
-#       stack.set_transition_duration(1000)
         self.clock_show = Gtk.Label()
-        body_box.add(self.clock_show)
+        self.body_box.add(self.clock_show)
 
         def set_time(current_time):
             self.clock_show.set_markup('<span font = "80" foreground = "#FFFFFF">' + current_time + '</span>')
