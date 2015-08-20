@@ -1,2 +1,10 @@
 # alarm-clock-linux-gtk
-Alarm clock widget with Material Design for Ubuntu/Debian
+Alarm clock for Ubuntu/Debian
+--------------------------------------------------------------
+
+This Application is made using "PyGobject/PyGI".
+
+--------------------------------------------------------------
+		Under Development
+--------------------------------------------------------------
+

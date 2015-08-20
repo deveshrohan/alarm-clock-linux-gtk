@@ -11,7 +11,7 @@ class Clock:
         mm = str("%02d" % current_time.minute)
         ss = str("%02d" % current_time.second)
 
-        return hh + ":" + mm + ":" + ss
+        return (hh + ":" + mm + ":" + ss)
 
 
 
